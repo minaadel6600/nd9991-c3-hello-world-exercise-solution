@@ -71,7 +71,16 @@ jobs:
           command: |
             ansible-playbook -i inventory.txt main4.yml
  
-  
+  # Exercise: Smoke Testing
+  smoke_test:
+   docker:
+     - image: alpine:latest
+   steps:
+     - run:
+         name: Test job
+         # Fail the job intentionally to simulate an error.
+         command:  return 1
+     - destroy_environment  
  
 
 
@@ -81,5 +90,6 @@ workflows:
   my_workflow:
     # Run the welcome/run job in its own container
     jobs:
-  #    - create_infrastructure
+      - create_infrastructure
       - configure_infrastructure
+      - smoke_test
